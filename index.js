@@ -3,6 +3,10 @@ const fs = require('fs');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer')
 const Intern = require('./lib/Intern');
+const ourTeam = [];
+const organizedTeam = [];
+let htmlCardString = ``;
+let numberOfTeamMembers = 0;
 
 const managerQuestions = [
     {
@@ -164,6 +168,8 @@ function createManager() {
                 answers.managerEmail,
                 answers.officeNumber,
             );
+            ourTeam.push(manager);
+            numberOfTeamMembers++;
             //WHEN I enter the team manager’s name, employee ID, email address, and office number
             //THEN I am presented with a menu with the option to add an engineer or an intern or to finish building my team
             addTeamMember();
@@ -180,6 +186,8 @@ function createEngineer() {
                 answers.engineerEmail,
                 answers.engineerGithub
             );
+            ourTeam.push(engineer);
+            numberOfTeamMembers++;
             addTeamMember();
         })
 }
@@ -194,6 +202,8 @@ function createIntern() {
                 answers.internEmail,
                 answers.internSchool
             );
+            ourTeam.push(intern);
+            numberOfTeamMembers++;
             addTeamMember();
         })
 }
@@ -212,17 +222,107 @@ function addTeamMember() {
             else if(answer.teamMemberType === 'Intern') {
                 createIntern();
             }
-            else console.log("at this stage we generate the HTML document. You have to figure out how to gather the objects.");
+            else {
+                organizeTeam(ourTeam);
+                generateHtml(organizedTeam);
+                buildPage(htmlCardString);
+            }
         })
 }
 
-function buildTeam() {
+function organizeTeam(team) {
+    let masterIndex = 0;
+    for (let index = 0; index < numberOfTeamMembers; index++) {
+        if(team[index].getRole() === "Manager") {
+            organizedTeam[masterIndex] = team[index];
+            masterIndex++;
+        }
+    }
+    for (let index = 0; index < numberOfTeamMembers; index++) {
+        if(team[index].getRole() === "Engineer") {
+            organizedTeam[masterIndex] = team[index];
+            masterIndex++;
+        }
+    }
+    for (let index = 0; index < numberOfTeamMembers; index++) {
+        if(team[index].getRole() === "Intern") {
+            organizedTeam[masterIndex] = team[index];
+            masterIndex++;
+        }
+    }
+}
+
+function generateHtml(team) {    
+    for (let index = 0; index < numberOfTeamMembers; index++) {
+        if(team[index].getRole() === "Manager") {
+            htmlCardString += `<div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title bg-primary text-white">${team[index].getName()}</h5>
+              <p class="card-text">ID: ${team[index].getId()}<br>
+              Email: <a href="${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
+              Office Number: ${team[index].getOfficeNumber()}</p>
+            </div>
+          </div>`;
+        }
+        if(team[index].getRole() === "Engineer") {
+            htmlCardString += `<div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title bg-primary text-white">${team[index].getName()}</h5>
+              <p class="card-text">ID: ${team[index].getId()}<br>
+              Email: <a href="${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
+              Github: <a href="${team[index].getGithub()}" class="link-primary">${team[index].getGithub()}</a></p>
+            </div>
+          </div>`;
+        }
+        if(team[index].getRole() === "Intern") {
+            htmlCardString +=`<div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title bg-primary text-white">${team[index].getName()}</h5>
+              <p class="card-text">ID: ${team[index].getId()}<br>
+              Email: <a href="${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
+              School: ${team[index].getSchool()}</p>
+            </div>
+          </div>`;
+        }
+    }
+
+}
+
+function buildPage(htmlCardData) {
+    let pageHtml = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <title>My Team</title>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="col-12  mb-3">
+                <h1 class="text-center bg-danger text-white">My Team</h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    ${htmlCardData}
+            </div>
+        </div>
+    </body>
+    </html>`
+    fs.writeFile("index.html", pageHtml, (err) =>
+        err ? console.log(err) : console.log('Success!'))
+}
+
+function runProgram() {
     console.log("Please answer the following questions to build your engineering team.");
     createManager();
 }
 
 //GIVEN a command-line application that accepts user input
-buildTeam();
+runProgram();
 
 
 /*
