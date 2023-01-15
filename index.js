@@ -56,7 +56,7 @@ const managerQuestions = [
 ];
 
 const teamMemberQuestion =     {
-    type: 'list', //dropdown listing engineer, intern, and "no more teammembers"
+    type: 'list',
     name: 'teamMemberType',
     message: 'Which team member would you like to add next?',
     choices: ['Engineer','Intern','No other team members']
@@ -222,6 +222,8 @@ function addTeamMember() {
             else if(answer.teamMemberType === 'Intern') {
                 createIntern();
             }
+            //WHEN I decide to finish building my team
+            //THEN I exit the application, and the HTML is generated
             else {
                 organizeTeam(ourTeam);
                 generateHtml(organizedTeam);
@@ -252,6 +254,8 @@ function organizeTeam(team) {
     }
 }
 
+//WHEN I click on an email address in the HTML
+//THEN my default email program opens and populates the TO field of the email with the address
 function generateHtml(team) {    
     for (let index = 0; index < numberOfTeamMembers; index++) {
         if(team[index].getRole() === "Manager") {
@@ -259,7 +263,7 @@ function generateHtml(team) {
             <div class="card-body">
               <h5 class="card-title bg-primary text-white">${team[index].getName()}</h5>
               <p class="card-text">ID: ${team[index].getId()}<br>
-              Email: <a href="${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
+              Email: <a href="mailto: ${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
               Office Number: ${team[index].getOfficeNumber()}</p>
             </div>
           </div>`;
@@ -269,8 +273,8 @@ function generateHtml(team) {
             <div class="card-body">
               <h5 class="card-title bg-primary text-white">${team[index].getName()}</h5>
               <p class="card-text">ID: ${team[index].getId()}<br>
-              Email: <a href="${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
-              Github: <a href="${team[index].getGithub()}" class="link-primary">${team[index].getGithub()}</a></p>
+              Email: <a href="mailto: ${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
+              Github: <a href="https://github.com/${team[index].getGithub()}" class="link-primary">${team[index].getGithub()}</a></p>
             </div>
           </div>`;
         }
@@ -279,15 +283,18 @@ function generateHtml(team) {
             <div class="card-body">
               <h5 class="card-title bg-primary text-white">${team[index].getName()}</h5>
               <p class="card-text">ID: ${team[index].getId()}<br>
-              Email: <a href="${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
+              Email: <a href="mailto: ${team[index].getEmail()}" class="link-primary">${team[index].getEmail()}</a><br>
               School: ${team[index].getSchool()}</p>
             </div>
           </div>`;
         }
     }
-
 }
 
+//WHEN I am prompted for my team members and their information
+//THEN an HTML file is generated that displays a nicely formatted team roster based on user input
+//WHEN I click on the GitHub username
+//THEN that GitHub profile opens in a new tab
 function buildPage(htmlCardData) {
     let pageHtml = `<!DOCTYPE html>
     <html lang="en">
@@ -312,6 +319,7 @@ function buildPage(htmlCardData) {
         </div>
     </body>
     </html>`
+
     fs.writeFile("index.html", pageHtml, (err) =>
         err ? console.log(err) : console.log('Success!'))
 }
@@ -323,18 +331,3 @@ function runProgram() {
 
 //GIVEN a command-line application that accepts user input
 runProgram();
-
-
-/*
-WHEN I am prompted for my team members and their information
-THEN an HTML file is generated that displays a nicely formatted team roster based on user input
-
-WHEN I click on an email address in the HTML
-THEN my default email program opens and populates the TO field of the email with the address
-
-WHEN I click on the GitHub username
-THEN that GitHub profile opens in a new tab
-
-WHEN I decide to finish building my team
-THEN I exit the application, and the HTML is generated
-*/
