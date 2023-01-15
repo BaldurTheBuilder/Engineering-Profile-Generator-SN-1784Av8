@@ -1,3 +1,71 @@
+const questions = [
+    {
+        type: 'input',
+        name: 'managerName',
+        message: 'What is your manager\'s name?',
+    },
+    {
+        type: 'input',
+        name: 'managerId',
+        message: 'What is your manager\'s ID?',
+    },
+    {
+        type: 'input',
+        name: 'managerEmail',
+        message: 'What is your manager\'s Email?',
+    },
+    {
+        type: 'input',
+        name: 'managerOfficeNumber',
+        message: 'What is your manager\'s office number?',
+    },
+    {
+        type: '', //dropdown listing engineer, intern, and "no more teammembers"
+        name: 'teamMemberType',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'engineerName',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'engineerId',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'engineerEmail',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'engineerGitHub',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'internName',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'internId',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'internEmail',
+        message: '',
+    },
+    {
+        type: 'input',
+        name: 'internSchool',
+        message: '',
+    },
+];
+
 /*
 AS A manager I WANT to generate a webpage that displays my team's basic info
 SO THAT I have quick access to their emails and GitHub profiles
